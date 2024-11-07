@@ -17,6 +17,10 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 
+# Estou importando a variável api do arquivo api.py para ser usada como url das minhas rotas
+from .api import api
+
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('', api.urls),
 ]
