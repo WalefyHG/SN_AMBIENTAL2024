@@ -12,9 +12,19 @@
 
 - E para instalar todas as dependencias utilize: poetry install
 
+## Configurando o Core(Nucleo) do meu projeto:
 
+- Utilizando esse comando: **django-admin startproject core .** Para criar o nucleo do projeto, onde serão configuradas boa parte do projeto, como: Banco de dados, servidores, urls, entre outras coisas...
 
+## Criando meus "APPS"
 
+Para criação dos apps do projeto: utilizei esses comandos:
+
+- python manage.py startapp usuario
+- python manage.py startapp pedido
+- python manage.py startapp itens_pedidos
+
+Utilizando eles para moldar a estrutura de cada tabela do banco de dados e redirecionar suas rotas
 
 ## Banco de dados:
 * Sequencia do codigo em DDL do banco de dados feito em mysql:
