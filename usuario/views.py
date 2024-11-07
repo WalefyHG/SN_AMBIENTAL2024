@@ -1,3 +1,9 @@
-from django.shortcuts import render
+from ninja import Router
 
-# Create your views here.
+# Serão criadas as funções e chamadas das rotas
+
+route = Router()
+
+@route.get('listarUsuario')
+def get_usuarios(request):
+    return 'Lista de usuários'
