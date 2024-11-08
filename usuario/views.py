@@ -49,7 +49,7 @@ def get_usuario_by_id(request, id: int):
 @route.put('atualizarUsuario/{id}', response={200: str})
 def update_usuario(request, id: int, user: UsuarioSchemaPut):
     # Atualizando o usuario a partir do ID e do schema de entrada
-    usu = Usuario.objects.get(id=id)
+    usu = get_object_or_404(Usuario, id=id)
     if user.nome:
         usu.nome = user.nome
     if user.email:

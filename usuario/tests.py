@@ -184,3 +184,74 @@ def test_list_user_by_id_not_exists():
     client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
     response = client.get(url + '10')
     assert response.status_code == 404
+
+# Testando atualizar o usuario pelo id
+
+@pytest.mark.django_db
+
+def test_update_user():
+    client = APIClient()
+    url = '/atualizarUsuario/'
+    
+    user = Usuario.objects.create(
+        nome= 'Teste',
+        email= 'teste@gmail.com',
+        senha= '123456'
+    )
+    
+    user_data = {
+        'email': 'teste@gmail.com',
+        'senha': '123456'
+    }
+    
+    login_response = client.post('/login', user_data, format='json')
+    assert login_response.status_code == 200
+    assert 'token' in login_response.json()
+    
+    token = login_response.json()['token']
+    client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
+
+    user_data = {
+        'nome': 'Teste2',
+        'email': 'teste@gmail.com',
+        'senha': '123456'
+    }
+    
+    response = client.put(url + str(user.id), user_data, format='json')
+    assert response.status_code == 200
+
+# Testando atulizar o usuario pelo id caso o usuario não exista
+
+@pytest.mark.django_db
+
+def test_update_user_not_exists():
+    client = APIClient()
+    url = '/atualizarUsuario/'
+    
+    user = Usuario.objects.create(
+        nome= 'Teste',
+        email= 'teste@gmail.com',
+        senha= '123456'
+    )
+    
+    user_data = {
+        'email': 'teste@gmail.com',
+        'senha': '123456'
+    }
+    
+    login_response = client.post('/login', user_data, format='json')
+    assert login_response.status_code == 200
+    assert 'token' in login_response.json()
+    
+    token = login_response.json()['token']
+    client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
+    
+    user_data = {
+        'nome': 'Teste2',
+        'email': 'teste@gmail.com',
+        'senha': '123456'
+    }
+    
+    response = client.put(url + '10', user_data, format='json')
+    assert response.status_code == 404
+        
