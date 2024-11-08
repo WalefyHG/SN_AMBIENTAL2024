@@ -14,7 +14,6 @@ class ItensPedidosSchemaIn(Schema):
     nome: str
     descricao: str
     preco: float
-    categoria: str
     
 class ItensPedidosSchemaOut(Schema):
     id: int

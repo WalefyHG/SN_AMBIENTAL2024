@@ -3,6 +3,7 @@ from ninja import Router
 from itens_pedidos.models import ItensPedidos
 from itens_pedidos.schemas import ItensPedidosSchemaIn, ItensPedidosSchemaOut, ItensPedidosCategoriaType, ItensPedidosSchemaPut
 from pedido.models import Pedido
+from django.shortcuts import get_object_or_404
 
 route = Router()
 
@@ -18,7 +19,7 @@ def listar_itens(request):
 @route.post('criarItem')
 def criar_item(request, item: ItensPedidosSchemaIn, itens_pedidos_status: ItensPedidosCategoriaType):
     # Pega o pedido pelo id e caso não ache ele dá erro 404
-    pedido = Pedido.objects.get_object_or_404(id=item.pedido_id)
+    pedido = get_object_or_404(Pedido, id=item.pedido_id)
     
     # Cria o item a partir dos dados selecionados
     item = ItensPedidos.objects.create(
