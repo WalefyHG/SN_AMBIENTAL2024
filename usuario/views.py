@@ -4,6 +4,7 @@ from .models import Usuario
 from ninja.pagination import paginate
 from typing import List
 from ninja.errors import HttpError
+from django.shortcuts import get_object_or_404
 
 # Serão criadas as funções e chamadas das rotas
 
@@ -13,7 +14,10 @@ route = Router()
 @route.get('listarUsuario', response={200: List[UsuarioSchemaOut]})
 @paginate
 def get_usuarios(request):
-    return Usuario.objects.all().values()
+    
+    # Listando todos os usuarios
+    return Usuario.objects.all()
+    
 
 # Criando um usuario
 @route.post('criandoUsuario', auth=None, response={200: UsuarioSchemaOut})
@@ -36,10 +40,8 @@ def create_usuario(request, user: UsuarioSchemaIn):
 @route.get('listarUsuario/{id}', response={200: UsuarioSchemaOut})
 def get_usuario_by_id(request, id: int):
     
-    user = Usuario.objects.get(id=id)
+    user = get_object_or_404(Usuario, id=id)
     
-    if user is None:
-        raise HttpError(404, 'Usuario não encontrado')
     return user
 
 
