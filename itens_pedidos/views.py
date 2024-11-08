@@ -37,8 +37,9 @@ def criar_item(request, item: ItensPedidosSchemaIn, itens_pedidos_status: ItensP
 
 @route.get('listarItem/{id}', response=ItensPedidosSchemaOut)
 def listar_item(request, id: int):
-    # Retorna o item pelo id
-    return ItensPedidos.objects.get(id=id)
+    item = get_object_or_404(ItensPedidos, id=id)
+    
+    return item
 
 # Atualizando Item pelo id
 
