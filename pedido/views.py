@@ -44,3 +44,9 @@ def deletar_pedido(request, id: int):
 def listar_pedidos_usuario(request, usuario_id: int):
     usuario = get_object_or_404(Usuario, id=usuario_id)
     return list(Pedido.objects.filter(usuario_id=usuario))
+
+
+# Listar pedidos pelo status
+@route.get('/listarPedidosUsuarioStatus/{status}', response=List[PedidoSchemaOut])
+def listar_pedidos_usuario_status(request, status: str):
+    return list(Pedido.objects.filter(status=status))
