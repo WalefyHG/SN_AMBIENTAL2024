@@ -1,7 +1,7 @@
 from typing import List
 from ninja import Router
 from .models import Pedido
-from .schemas import PedidoSchemaIn, PedidoSchemaOut, PedidosStatusType
+from .schemas import PedidoSchemaIn, PedidoSchemaOut, PedidosStatusType, PedidosSchemaPut
 from usuario.models import Usuario
 from django.shortcuts import get_object_or_404
 from datetime import date
@@ -40,8 +40,8 @@ def listar_pedido(request, id: int):
 
 # Atualizando o pedido pelo id
 @route.put('/atualizarPedido/{id}', response=PedidoSchemaOut)
-def atualizar_pedido(request, id: int, pedido: PedidoSchemaIn):
-    Pedido.objects.filter(id=id).update(**pedido.dict())
+def atualizar_pedido(request, id: int, pedido: PedidosSchemaPut, pedido_status: PedidosStatusType):
+    pedido = Pedido.objects.filter(id=id).update(**pedido.dict(), status=pedido_status.value)
     return Pedido.objects.get(id=id)
 
 # Deletando o pedido pelo id

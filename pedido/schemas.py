@@ -24,3 +24,7 @@ class PedidoSchemaOut(Schema):
     total: float
     status: str
     
+class PedidosSchemaPut(Schema):
+    data_pedido: date = None
+    total: float = None
+    status: str = ''

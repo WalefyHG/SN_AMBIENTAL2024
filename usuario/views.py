@@ -1,5 +1,5 @@
 from ninja import Router
-from .schemas import UsuarioSchemaIn, UsuarioSchemaOut
+from .schemas import UsuarioSchemaIn, UsuarioSchemaOut, UsuarioSchemaPut
 from .models import Usuario
 from ninja.pagination import paginate
 from typing import List
@@ -32,7 +32,7 @@ def get_usuario_by_id(request, id: int):
 
 # Atualizando usuario atraves do ID
 @route.put('atualizarUsuario/{id}', response={200: str})
-def update_usuario(request, id: int, user: UsuarioSchemaIn):
+def update_usuario(request, id: int, user: UsuarioSchemaPut):
     # Atualizando o usuario a partir do ID e do schema de entrada
     usu = Usuario.objects.get(id=id)
     if user.nome:

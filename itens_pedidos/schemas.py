@@ -23,3 +23,10 @@ class ItensPedidosSchemaOut(Schema):
     descricao: str
     preco: float
     categoria: str
+    
+class ItensPedidosSchemaPut(Schema):
+    nome: str = ''
+    descricao: str = ''
+    preco: float = None
+    categoria: str = ''
+    
