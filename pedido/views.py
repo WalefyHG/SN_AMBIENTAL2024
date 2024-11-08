@@ -41,8 +41,20 @@ def listar_pedido(request, id: int):
 # Atualizando o pedido pelo id
 @route.put('/atualizarPedido/{id}', response=PedidoSchemaOut)
 def atualizar_pedido(request, id: int, pedido: PedidosSchemaPut, pedido_status: PedidosStatusType):
-    pedido = Pedido.objects.filter(id=id).update(**pedido.dict(), status=pedido_status.value)
-    return Pedido.objects.get(id=id)
+    pedido_obj = Pedido.objects.filter(id=id)
+    
+    if pedido.data_pedido:
+        pedido_obj.data_pedido = pedido.data_pedido
+        
+    if pedido.total:
+        pedido_obj.total = pedido.total
+        
+    if pedido.status:
+        pedido_obj.status = pedido_status.value
+    
+    pedido_obj.save()
+    
+    return pedido_obj
 
 # Deletando o pedido pelo id
 @route.delete('/deletarPedido/{id}', response={200: str})

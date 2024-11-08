@@ -10,13 +10,17 @@ route = Router()
 
 @route.get('listarItens' , response=List[ItensPedidosSchemaOut])
 def listar_itens(request):
+    # Retorna uma lista com todos os itens
     return ItensPedidos.objects.all()
 
 
 # Criando um item
 @route.post('criarItem')
 def criar_item(request, item: ItensPedidosSchemaIn, itens_pedidos_status: ItensPedidosCategoriaType):
-    pedido = Pedido.objects.get(id=item.pedido_id)
+    # Pega o pedido pelo id e caso não ache ele dá erro 404
+    pedido = Pedido.objects.get_object_or_404(id=item.pedido_id)
+    
+    # Cria o item a partir dos dados selecionados
     item = ItensPedidos.objects.create(
         pedido_id=pedido,
         nome=item.nome,
@@ -25,26 +29,42 @@ def criar_item(request, item: ItensPedidosSchemaIn, itens_pedidos_status: ItensP
         categoria= itens_pedidos_status.value
     )
     item.save()
+    # Retorna uma mensagem de sucesso
     return "Item criado com sucesso"
 
 # Listando item pelo id
 
 @route.get('listarItem/{id}', response=ItensPedidosSchemaOut)
 def listar_item(request, id: int):
+    # Retorna o item pelo id
     return ItensPedidos.objects.get(id=id)
 
 # Atualizando Item pelo id
 
 @route.put('atualizarItem/{id}', response=ItensPedidosSchemaOut)
 def atualizar_item(request, id: int, item: ItensPedidosSchemaPut, item_status: ItensPedidosCategoriaType):
-    item = ItensPedidos.objects.filter(id=id).update(**item.dict(), categoria=item_status.value)
-    item.save()
-    return item
+    item_obj = ItensPedidos.objects.filter(id=id)
+    
+    # Verifica se existe itens no payload e atualiza o item
+    if item.nome:
+        item_obj.nome = item.nome
+    if item.descricao:
+        item_obj.descricao = item.descricao
+    if item.preco:
+        item_obj.preco = item.preco
+    if item.categoria:
+        item_obj.categoria = item_status.value
+    # Salva o item no banco de dados
+    item_obj.save()
+    # Retorna o objeto atualizado
+    return item_obj
 
 # Deletando item pelo id
 
 @route.delete('deletarItem/{id}', response={200: str})
 def deletar_item(request, id: int):
+    # Busca o item pelo id e deleta ele
     ItensPedidos.objects.get(id=id).delete()
+    # Retorna uma mensagem de sucesso
     return 'Item deletado com sucesso'
 
