@@ -45,7 +45,7 @@ def listar_item(request, id: int):
 
 @route.put('atualizarItem/{id}', response=ItensPedidosSchemaOut)
 def atualizar_item(request, id: int, item: ItensPedidosSchemaPut, item_status: ItensPedidosCategoriaType):
-    item_obj = ItensPedidos.objects.filter(id=id)
+    item_obj = get_object_or_404(ItensPedidos, id=id)
     
     # Verifica se existe itens no payload e atualiza o item
     if item.nome:
@@ -66,7 +66,8 @@ def atualizar_item(request, id: int, item: ItensPedidosSchemaPut, item_status: I
 @route.delete('deletarItem/{id}', response={200: str})
 def deletar_item(request, id: int):
     # Busca o item pelo id e deleta ele
-    ItensPedidos.objects.get(id=id).delete()
+    item = get_object_or_404(ItensPedidos, id=id)
+    item.delete()
     # Retorna uma mensagem de sucesso
     return 'Item deletado com sucesso'
 
