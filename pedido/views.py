@@ -1,3 +1,7 @@
-from django.shortcuts import render
+from ninja import Router
 
-# Create your views here.
+route = Router()
+
+@route.get('listarPedido')
+def get_pedidos(request):
+    return 'Lista de pedidos'
