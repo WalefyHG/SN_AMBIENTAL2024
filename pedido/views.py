@@ -1,7 +1,7 @@
 from typing import List
 from ninja import Router
 from .models import Pedido
-from .schemas import PedidoSchemaIn, PedidoSchemaOut
+from .schemas import PedidoSchemaIn, PedidoSchemaOut, PedidosStatusType
 from usuario.models import Usuario
 from django.shortcuts import get_object_or_404
 
@@ -14,13 +14,13 @@ def listar_pedidos(request):
     return Pedido.objects.all()
 
 @route.post('/criarPedido', response={200: str})
-def criar_pedido(request, pedido: PedidoSchemaIn):
+def criar_pedido(request, pedido: PedidoSchemaIn, pedidos_status: PedidosStatusType):
     usuario = get_object_or_404(Usuario, id=pedido.usuario_id)
     pedido = Pedido.objects.create(
         usuario_id=usuario,
         data_pedido=pedido.data_pedido,
         total=pedido.total,
-        status=pedido.status
+        status=pedidos_status.value
     )
     pedido.save()
     return "Pedido criado com sucesso"
