@@ -17,7 +17,7 @@ def listar_pedidos(request):
 
 # Criando os Pedidos
 
-@route.post('/criarPedido', response={200: str})
+@route.post('/criarPedido', response=PedidoSchemaOut)
 def criar_pedido(request, pedido: PedidoSchemaIn, pedidos_status: PedidosStatusType):
     # Ele pega o id do usuario e verifica se ele existe, caso não exista, ele dá error 404
     usuario = get_object_or_404(Usuario, id=pedido.usuario_id)
@@ -31,17 +31,19 @@ def criar_pedido(request, pedido: PedidoSchemaIn, pedidos_status: PedidosStatusT
     # Salva o pedido no banco de dados
     pedido.save()
     # Retorna uma mensagem de sucesso
-    return "Pedido criado com sucesso"
+    return pedido
 
 # Listando os pedidos pelo id
 @route.get('/listarPedido/{id}', response=PedidoSchemaOut)
 def listar_pedido(request, id: int):
-    return Pedido.objects.get(id=id)
+    # Ele pega o id do pedido e verifica se ele existe, caso não exista, ele dá error 404
+    pedido = get_object_or_404(Pedido, id=id)
+    return pedido
 
 # Atualizando o pedido pelo id
 @route.put('/atualizarPedido/{id}', response=PedidoSchemaOut)
 def atualizar_pedido(request, id: int, pedido: PedidosSchemaPut, pedido_status: PedidosStatusType):
-    pedido_obj = Pedido.objects.filter(id=id)
+    pedido_obj = get_object_or_404(Pedido, id=id)
     
     if pedido.data_pedido:
         pedido_obj.data_pedido = pedido.data_pedido
@@ -59,7 +61,8 @@ def atualizar_pedido(request, id: int, pedido: PedidosSchemaPut, pedido_status: 
 # Deletando o pedido pelo id
 @route.delete('/deletarPedido/{id}', response={200: str})
 def deletar_pedido(request, id: int):
-    Pedido.objects.get(id=id).delete()
+    pedido = get_object_or_404(Pedido, id=id)
+    pedido.delete()
     return 'Pedido deletado com sucesso'
 
 # Listando pedidos de um usuario
