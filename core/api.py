@@ -6,6 +6,8 @@ from utils.login.login import route as login_route
 from rest_framework_simplejwt.authentication import JWTAuthentication
 from ninja.security import HttpBearer
 
+
+# Bearer para fazer a verificação de tokens
 class JWTBearer(HttpBearer):
     def authenticate(self, request, token):
         try:
@@ -18,6 +20,7 @@ class JWTBearer(HttpBearer):
 
 api = NinjaAPI()
 
+# Adicionando as rotas na minha url
 api.add_router('', login_route, tags=["Login"])
 api.add_router('', usuario_route, auth=JWTBearer(), tags=["Usuarios"])
 api.add_router('', pedido_route, auth=JWTBearer() ,tags=["Pedidos"])

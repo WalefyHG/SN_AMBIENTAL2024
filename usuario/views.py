@@ -15,11 +15,15 @@ def get_usuarios(request):
     return Usuario.objects.all().values()
 
 # Criando um usuario
-@route.post('criandoUsuario', auth=None)
+@route.post('criandoUsuario', auth=None, response={200: UsuarioSchemaOut})
 def create_usuario(request, user: UsuarioSchemaIn):
     # Criando um usuario a partir do schema de entrada
-    usu = Usuario.objects.create(**user.dict())
-    return UsuarioSchemaOut(**usu.__dict__)
+    usu = Usuario.objects.create(
+        nome=user.nome,
+        email=user.email,
+        senha=user.senha
+    )
+    return usu
 
 # Listando usuario atraves do ID
 @route.get('listarUsuario/{id}', response={200: UsuarioSchemaOut})
