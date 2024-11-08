@@ -3,7 +3,7 @@ from .schemas import UsuarioSchemaIn, UsuarioSchemaOut, UsuarioSchemaPut
 from .models import Usuario
 from ninja.pagination import paginate
 from typing import List
-from django.core.exceptions import ValidationError
+from ninja.errors import HttpError
 
 # Serão criadas as funções e chamadas das rotas
 
@@ -21,7 +21,7 @@ def create_usuario(request, user: UsuarioSchemaIn):
     
     #Verificando se Existe um usuario
     if Usuario.objects.filter(email=user.email).exists():
-        raise ValidationError('Este e-mail já está foi cadastrado')
+        raise HttpError(400, "Usuario já existe")
     
     
     # Criando um usuario a partir do schema de entrada
@@ -35,7 +35,13 @@ def create_usuario(request, user: UsuarioSchemaIn):
 # Listando usuario atraves do ID
 @route.get('listarUsuario/{id}', response={200: UsuarioSchemaOut})
 def get_usuario_by_id(request, id: int):
-    return Usuario.objects.get(id=id)
+    
+    user = Usuario.objects.get(id=id)
+    
+    if user is None:
+        raise HttpError(404, 'Usuario não encontrado')
+    return user
+
 
 # Atualizando usuario atraves do ID
 @route.put('atualizarUsuario/{id}', response={200: str})

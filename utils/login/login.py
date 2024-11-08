@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate
 from rest_framework.exceptions import AuthenticationFailed
 from utils.login.schemas import LoginSchema
 from django.contrib.auth import get_user_model
+from ninja.errors import HttpError
 
 route = Router()
 
@@ -22,8 +23,8 @@ def obtain_token(request, user: LoginSchema):
             return {'token': str(token)}
         else:
             # Senha incorreta
-            raise AuthenticationFailed('Usuário ou senha inválidos')
+            raise HttpError(404, 'Usuário ou senha inválidos')
         
     except Usuario.DoesNotExist:
         # Usuario não existe
-        raise AuthenticationFailed('Usuário não existe')
+        raise HttpError(406, 'Usuário não existe')
