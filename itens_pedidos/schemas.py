@@ -1,5 +1,13 @@
 from ninja import Schema
 from pedido.schemas import PedidoSchemaOut
+from enum import Enum
+
+
+class ItensPedidosCategoriaType(str, Enum):
+    bebida = "Bebida"
+    sobremesa = "Sobremesa"
+    salada = "Salada"
+    acompanhamento = "Acompanhamento"
 
 class ItensPedidosSchemaIn(Schema):
     pedido_id: int

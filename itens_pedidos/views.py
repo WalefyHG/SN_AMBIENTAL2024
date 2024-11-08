@@ -1,7 +1,7 @@
 from typing import List
 from ninja import Router
 from itens_pedidos.models import ItensPedidos
-from itens_pedidos.schemas import ItensPedidosSchemaIn, ItensPedidosSchemaOut
+from itens_pedidos.schemas import ItensPedidosSchemaIn, ItensPedidosSchemaOut, ItensPedidosCategoriaType
 from pedido.models import Pedido
 
 route = Router()
@@ -11,14 +11,14 @@ def listar_itens(request):
     return ItensPedidos.objects.all()
 
 @route.post('criarItem', response={200: str})
-def criar_item(request, item: ItensPedidosSchemaIn):
+def criar_item(request, item: ItensPedidosSchemaIn, itens_pedidos_status: ItensPedidosCategoriaType):
     pedido = Pedido.objects.get(id=item.pedido_id)
     item = ItensPedidos.objects.create(
         pedido_id=pedido,
         nome=item.nome,
         descricao=item.descricao,
         preco=item.preco,
-        categoria=item.categoria
+        categoria= itens_pedidos_status.value
     )
     item.save()
     return "Item criado com sucesso"

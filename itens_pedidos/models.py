@@ -6,10 +6,10 @@ from pedido.models import Pedido
 class ItensPedidos(models.Model):
     
     CATEGORY_CHOICES = (
-        ('1', 'Bebida'),
-        ('2', 'Sobremesa'),
-        ('3', 'Salada'),
-        ('4', 'Acompanhamento')
+        ('bebida', 'Bebida'),
+        ('sobremesa', 'Sobremesa'),
+        ('salada', 'Salada'),
+        ('acompanhamento', 'Acompanhamento')
     )
     
     
