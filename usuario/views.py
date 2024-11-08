@@ -63,5 +63,6 @@ def update_usuario(request, id: int, user: UsuarioSchemaPut):
 @route.delete('deletarUsuario/{id}', response={200: str})
 def delete_usuario(request, id: int):
     # Deletando o usuario a partir do ID
-    Usuario.objects.get(id=id).delete()
+    user = get_object_or_404(Usuario, id=id)
+    user.delete()
     return 'Usuario deletado com sucesso'

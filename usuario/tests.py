@@ -255,3 +255,61 @@ def test_update_user_not_exists():
     response = client.put(url + '10', user_data, format='json')
     assert response.status_code == 404
         
+        
+# Testando o endpoint de deletar o usuario pelo id
+
+@pytest.mark.django_db
+
+def test_delete_user():
+    client = APIClient()
+    url = '/deletarUsuario/'
+    
+    user = Usuario.objects.create(
+        nome= 'Teste',
+        email= 'teste@gmail.com',
+        senha= '123456'
+    )
+    
+    user_data = {
+        'email': 'teste@gmail.com',
+        'senha': '123456'
+    }
+    
+    login_response = client.post('/login', user_data, format='json')
+    assert login_response.status_code == 200
+    assert 'token' in login_response.json()
+    
+    token = login_response.json()['token']
+    client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
+    
+    response = client.delete(url + str(user.id))
+    assert response.status_code == 200
+    
+# Testando o endpoint de deletar o usuario pelo id caso o usuario não exista
+
+@pytest.mark.django_db
+
+def test_delete_user_not_exists():
+    client = APIClient()
+    url = '/deletarUsuario/'
+    
+    user = Usuario.objects.create(
+        nome= 'Teste',
+        email= 'teste@gmail.com',
+        senha= '123456'
+    )
+    
+    user_data = {
+        'email': 'teste@gmail.com',
+        'senha': '123456'
+    }
+    
+    login_response = client.post('/login', user_data, format='json')
+    assert login_response.status_code == 200
+    assert 'token' in login_response.json()
+    
+    token = login_response.json()['token']
+    client.credentials(HTTP_AUTHORIZATION=f'Bearer {token}')
+    
+    response = client.delete(url + '10')
+    assert response.status_code == 404
