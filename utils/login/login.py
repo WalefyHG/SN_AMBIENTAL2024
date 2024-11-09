@@ -13,7 +13,7 @@ route = Router()
 @route.post('login')
 def obtain_token(request, user: LoginSchema):
     try:
-        # Usando o authenticate do django para verificar se o usuario existe a partir do email
+        # Pegando o usuario pelo email
         user1 = Usuario.objects.get(email=user.email)
         
         # Checando se a senha do usuario é a mesma que a senha passada na requisição
@@ -22,9 +22,9 @@ def obtain_token(request, user: LoginSchema):
             # Token gerado
             return {'token': str(token)}
         else:
-            # Senha incorreta
-            raise HttpError(404, 'Usuário ou senha inválidos')
+            # Caso a senha ou email esteja errada, dá error 404
+            raise HttpError(404, 'Email ou senha inválidos')
         
     except Usuario.DoesNotExist:
-        # Usuario não existe
+        # Caso o usuario não exista dá error 406
         raise HttpError(406, 'Usuário não existe')

@@ -8,7 +8,7 @@ from ninja.pagination import paginate
 
 route = Router()
 
-# Listando todos os itens
+# Endpoint para listar todos os itens
 
 @route.get('listarItens' , response=List[ItensPedidosSchemaOut])
 @paginate
@@ -17,7 +17,7 @@ def listar_itens(request):
     return ItensPedidos.objects.all()
 
 
-# Criando um item
+# Endpoint para criar um item
 @route.post('criarItem')
 def criar_item(request, item: ItensPedidosSchemaIn, itens_pedidos_status: ItensPedidosCategoriaType):
     # Pega o pedido pelo id e caso não ache ele dá erro 404
@@ -35,19 +35,22 @@ def criar_item(request, item: ItensPedidosSchemaIn, itens_pedidos_status: ItensP
     # Retorna uma mensagem de sucesso
     return "Item criado com sucesso"
 
-# Listando item pelo id
+# Endpoint para listar um item pelo id
 
 @route.get('listarItem/{id}', response=ItensPedidosSchemaOut)
 @paginate
 def listar_item(request, id: int):
-    item = get_object_or_404(ItensPedidos, id=id)
     
+    # Verifica se o item existe, caso não exista ele dá erro 404
+    item = get_object_or_404(ItensPedidos, id=id)
+    # Retorna o item
     return item
 
-# Atualizando Item pelo id
+# Endpoint para atualizar o item pelo id
 
 @route.put('atualizarItem/{id}', response=ItensPedidosSchemaOut)
 def atualizar_item(request, id: int, item: ItensPedidosSchemaPut, item_status: ItensPedidosCategoriaType):
+    # Verifica se o item existe, caso não exista ele dá erro 404
     item_obj = get_object_or_404(ItensPedidos, id=id)
     
     # Verifica se existe itens no payload e atualiza o item
@@ -64,11 +67,11 @@ def atualizar_item(request, id: int, item: ItensPedidosSchemaPut, item_status: I
     # Retorna o objeto atualizado
     return item_obj
 
-# Deletando item pelo id
+# Endpoint para deletar o item pelo id
 
 @route.delete('deletarItem/{id}', response={200: str})
 def deletar_item(request, id: int):
-    # Busca o item pelo id e deleta ele
+    # Busca o item pelo id e deleta ele, caso não exista ele dá erro 404
     item = get_object_or_404(ItensPedidos, id=id)
     item.delete()
     # Retorna uma mensagem de sucesso
