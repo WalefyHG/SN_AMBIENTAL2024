@@ -144,6 +144,21 @@ INSERT INTO itens_pedido (pedido_id, nome, descricao, preco, categoria) VALUES
 
 ```
 
+## Organização do Projeto
+
+Este projeto foi organizado da seguinte forma:
+
+ core: Núcleo do projeto, onde fica a maior parte das configurações, dentro dela tem o **api.py** que é o arquivo que controla toda minha api e junta todas os router dentro dele
+
+ Apps: Os aplicativos foram criados para cada entidade do banco de dados, como usuario, pedidos, itens_pedidos. São os apps do meu projeto. Em cada um deles tem os arquivos principais:
+ 
+ - **views.py**, onde é realizado o controle de rotas e principalmente as funções que são realizadas nas rotas
+
+ - **schemas.py**, os schemas do django ninja, ele controla a entrada e saida das respostas e dos payloads das rotas
+
+ - **models.py**, os models do meu banco de dados, onde estão as tabelas e atributos do banco. 
+ 
+Utils: São arquivos utilitarios, que utilizei como funções extras que foram implementadas como: **login.py** e **signals.py**
 
 ## Considerações finais
 
@@ -157,5 +172,6 @@ As partes que eu achei mais dificeis de implementar foram:
 
 - Não utilizei docker nesse projeto, mas tentei ao maximo atender todas os requerimentos que foram possiveis.
 
+Esse foi um projeto bem dificil de conseguir realizar de uma maneira bem organizada, dediquei o meu máximo para realizar todos os requisitos, muito obrigado!!
 
 _FIM DO PROJETO_
