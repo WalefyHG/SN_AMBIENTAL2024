@@ -38,7 +38,7 @@ def create_usuario(request, user: UsuarioSchemaIn):
 
 # Endpoint para listar um usuario atravas do ID
 @route.get('listarUsuario/{id}', response={200: UsuarioSchemaOut})
-@paginate
+
 def get_usuario_by_id(request, id: int):
     
     # Verifica se o usuario existe, caso não exista ele dá erro 404

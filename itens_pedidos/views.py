@@ -38,7 +38,7 @@ def criar_item(request, item: ItensPedidosSchemaIn, itens_pedidos_status: ItensP
 # Endpoint para listar um item pelo id
 
 @route.get('listarItem/{id}', response=ItensPedidosSchemaOut)
-@paginate
+
 def listar_item(request, id: int):
     
     # Verifica se o item existe, caso não exista ele dá erro 404

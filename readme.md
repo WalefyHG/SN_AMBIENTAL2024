@@ -28,8 +28,8 @@ DATABASES = {
         'NAME': 'nome_do_banco_de_dados',
         'USER': 'usuario_do_banco',
         'PASSWORD': 'senha_do_banco',
-        'HOST': 'localhost',  # IP do banco
-        'PORT': '3306',  # Porta padrão do MySQL
+        'HOST': 'localhost',
+        'PORT': '3306',
     }
 }
 ```

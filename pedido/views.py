@@ -37,7 +37,7 @@ def criar_pedido(request, pedido: PedidoSchemaIn, pedidos_status: PedidosStatusT
 
 # Endpoint para listar os pedidos pelo id
 @route.get('/listarPedido/{id}', response=PedidoSchemaOut)
-@paginate
+
 def listar_pedido(request, id: int):
     # Ele pega o id do pedido e verifica se ele existe, caso não exista, ele dá error 404
     pedido = get_object_or_404(Pedido, id=id)
