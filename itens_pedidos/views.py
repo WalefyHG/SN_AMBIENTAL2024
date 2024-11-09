@@ -4,12 +4,14 @@ from itens_pedidos.models import ItensPedidos
 from itens_pedidos.schemas import ItensPedidosSchemaIn, ItensPedidosSchemaOut, ItensPedidosCategoriaType, ItensPedidosSchemaPut
 from pedido.models import Pedido
 from django.shortcuts import get_object_or_404
+from ninja.pagination import paginate
 
 route = Router()
 
 # Listando todos os itens
 
 @route.get('listarItens' , response=List[ItensPedidosSchemaOut])
+@paginate
 def listar_itens(request):
     # Retorna uma lista com todos os itens
     return ItensPedidos.objects.all()
@@ -36,6 +38,7 @@ def criar_item(request, item: ItensPedidosSchemaIn, itens_pedidos_status: ItensP
 # Listando item pelo id
 
 @route.get('listarItem/{id}', response=ItensPedidosSchemaOut)
+@paginate
 def listar_item(request, id: int):
     item = get_object_or_404(ItensPedidos, id=id)
     

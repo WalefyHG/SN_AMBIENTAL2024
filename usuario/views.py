@@ -38,6 +38,7 @@ def create_usuario(request, user: UsuarioSchemaIn):
 
 # Listando usuario atraves do ID
 @route.get('listarUsuario/{id}', response={200: UsuarioSchemaOut})
+@paginate
 def get_usuario_by_id(request, id: int):
     
     user = get_object_or_404(Usuario, id=id)

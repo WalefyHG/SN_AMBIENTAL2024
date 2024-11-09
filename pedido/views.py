@@ -5,6 +5,7 @@ from .schemas import PedidoSchemaIn, PedidoSchemaOut, PedidosStatusType, Pedidos
 from usuario.models import Usuario
 from django.shortcuts import get_object_or_404
 from datetime import date
+from ninja.pagination import paginate
 
 route = Router()
 
@@ -12,6 +13,7 @@ route = Router()
 
 # Listando todos os pedidos existentes
 @route.get('/listarPedidos' , response=List[PedidoSchemaOut])
+@paginate
 def listar_pedidos(request):
     return Pedido.objects.all()
 
@@ -35,6 +37,7 @@ def criar_pedido(request, pedido: PedidoSchemaIn, pedidos_status: PedidosStatusT
 
 # Listando os pedidos pelo id
 @route.get('/listarPedido/{id}', response=PedidoSchemaOut)
+@paginate
 def listar_pedido(request, id: int):
     # Ele pega o id do pedido e verifica se ele existe, caso não exista, ele dá error 404
     pedido = get_object_or_404(Pedido, id=id)
@@ -67,6 +70,7 @@ def deletar_pedido(request, id: int):
 
 # Listando pedidos de um usuario
 @route.get('/listarPedidosUsuario/{usuario_id}', response=List[PedidoSchemaOut])
+@paginate
 def listar_pedidos_usuario(request, usuario_id: int):
     usuario = get_object_or_404(Usuario, id=usuario_id)
     return list(Pedido.objects.filter(usuario_id=usuario))
@@ -74,11 +78,13 @@ def listar_pedidos_usuario(request, usuario_id: int):
 
 # Listando pedidos pelo status
 @route.get('/listarPedidosUsuarioStatus/', response=List[PedidoSchemaOut])
+@paginate
 def listar_pedidos_usuario_status(request, pedidos_status: PedidosStatusType):
     return list(Pedido.objects.filter(status=pedidos_status.value))
 
 # Listando todos os pedidos através da data
 
 @route.get('/listarPedidosData/{data_pedido}', response=List[PedidoSchemaOut])
+@paginate
 def listar_pedidos_data(request, data_pedido: date):
     return list(Pedido.objects.filter(data_pedido=data_pedido))
