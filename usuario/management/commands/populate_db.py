@@ -5,6 +5,8 @@ from itens_pedidos.models import ItensPedidos
 from datetime import date
 import random
 
+# Criando comando para popular o banco de dados
+
 class Command(BaseCommand):
     help = 'Popula o banco de dados com dados aleatórios'
 
